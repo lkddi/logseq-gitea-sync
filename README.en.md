@@ -6,7 +6,9 @@ Automatically commit and push your Logseq graph to **Gitea** or any Git remote.
 
 ## Screenshots
 
-(TODO: screenshots of the toolbar icon and settings panel go here)
+![Toolbar status icon](docs/screenshots/screenshot-toolbar.png)
+
+![Settings panel](docs/screenshots/screenshot-settings.png)
 
 - ✅ Pure plugin — no external scripts or services. Uses Logseq's built-in git proxy (`logseq.Git.execCommand`).
 - 🔐 Two authentication modes: **HTTPS + access token** (recommended) and **SSH**.

@@ -6,7 +6,9 @@
 
 ## 截图 Screenshots
 
-（待添加：工具栏状态图标 + 设置面板截图 / Screenshots of the toolbar icon and settings panel go here）
+![工具栏状态图标 Toolbar status icon](docs/screenshots/screenshot-toolbar.png)
+
+![设置面板 Settings panel](docs/screenshots/screenshot-settings.png)
 
 - ✅ 纯插件实现 —— 无需外部脚本或服务，直接使用 Logseq 内置的 git 代理（`logseq.Git.execCommand`）
 - 🔐 双认证模式：**HTTPS + 访问令牌**（推荐）和 **SSH**
