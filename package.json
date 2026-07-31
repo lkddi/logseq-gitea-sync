@@ -1,0 +1,103 @@
+{
+  "name": "logseq-gitea-sync",
+  "version": "0.1.0",
+  "description": "自动将 Logseq 图谱通过 git 提交并推送到 Gitea 或任意 Git 远程仓库，支持 HTTPS+令牌与 SSH 认证、多设备自动 pull --rebase。",
+  "main": "dist/index.html",
+  "author": "laodong",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.17"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vite": "^5.4.0",
+    "@types/node": "^22.10.0"
+  },
+  "logseq": {
+    "id": "logseq-gitea-sync",
+    "title": "Gitea Sync",
+    "description": "自动提交并推送图谱到 Gitea / 任意 Git 远程仓库。",
+    "settings": [
+      {
+        "key": "requirements",
+        "title": "Prerequisite（使用前提）",
+        "description": "This plugin only PUSHES commits — Logseq builds them. Please ENABLE Logseq built-in \"Git auto commit\" (Settings > Version control).（本插件只负责推送提交，提交由 Logseq 生成。请开启 Logseq 内置的 \"Git auto commit\"（设置 > 版本控制））",
+        "type": "heading",
+        "default": ""
+      },
+      {
+        "key": "repoUrl",
+        "title": "Repository URL（仓库地址）",
+        "description": "Git remote URL, e.g. https://gitea.example.com/user/logseq.git or git@gitea.example.com:user/logseq.git（Git 远程仓库地址，支持 HTTPS 或 SSH 格式）",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "authMode",
+        "title": "Authentication mode（认证方式）",
+        "description": "https-token: HTTPS + access token (recommended / 推荐). ssh: use your SSH key（使用你的 SSH 密钥）. none: no auth（无需认证，仅限公开仓库）",
+        "type": "enum",
+        "default": "https-token",
+        "enumChoices": [
+          "https-token",
+          "ssh",
+          "none"
+        ]
+      },
+      {
+        "key": "username",
+        "title": "Username（用户名）",
+        "description": "Gitea accepts 'oauth2' as username for token auth. Use your Gitea username if token login fails.（Gitea 令牌认证的用户名填 oauth2 即可；登录失败时请改为你的 Gitea 用户名）",
+        "type": "string",
+        "default": "oauth2"
+      },
+      {
+        "key": "token",
+        "title": "Access token（访问令牌）",
+        "description": "WARNING: stored in plain text in .logseq/settings/. The plugin excludes .logseq/ from git, but protect your machine. Create a token in Gitea: Settings > Applications > Generate New Token.（警告：令牌以明文存储于 .logseq/settings/，插件会将其排除在 git 之外，但仍请保护你的电脑。Gitea 中创建：设置 > 应用 > 生成新令牌）",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "branch",
+        "title": "Branch（分支）",
+        "description": "Branch used when initializing a brand-new repository. Existing branches are kept as-is.（仅用于初始化全新仓库，已有分支保持不变）",
+        "type": "string",
+        "default": "master"
+      },
+      {
+        "key": "autoSync",
+        "title": "Auto sync（自动同步）",
+        "description": "Automatically commit and push when changes are detected.（检测到变更后自动提交并推送）",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "syncDelay",
+        "title": "Sync delay in seconds（同步延迟，秒）",
+        "description": "Wait this long after the last change before committing and pushing.（最后一次变更后等待多久再提交推送）",
+        "type": "number",
+        "default": 30
+      },
+      {
+        "key": "pollInterval",
+        "title": "Fallback poll interval in seconds（兜底轮询间隔，秒）",
+        "description": "Fallback check for changes even if no edit event was received.（即使未收到编辑事件，也定期检查变更）",
+        "type": "number",
+        "default": 60
+      },
+      {
+        "key": "pullRebase",
+        "title": "Pull --rebase before push（推送前自动拉取变基）",
+        "description": "Pull remote changes and rebase local commits on top before pushing. Required for multi-device use. Conflicts are aborted and reported, never auto-merged.（推送前先拉取远程变更并将本地提交变基到其上，多设备使用必需。冲突时自动中止并报告，绝不自动合并）",
+        "type": "boolean",
+        "default": true
+      }
+    ]
+  }
+}

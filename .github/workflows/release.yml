@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npx vite build
+
+      - name: Prepare release artifact
+        run: |
+          mkdir release
+          cp -r dist/* release/
+          cp logo.png release/ 2>/dev/null || true
+          cd release && zip -r ../logseq-gitea-sync.zip .
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: logseq-gitea-sync.zip
+          generate_release_notes: true
