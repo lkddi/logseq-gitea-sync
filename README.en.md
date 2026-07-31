@@ -71,6 +71,21 @@ Toolbar button: click to sync immediately. Command palette: `Gitea Sync: ...` fo
 - Push URLs containing the token are visible in `.git/config`. Consider using a dedicated token with only `repo` scope, and revoke it if the machine is compromised.
 - This plugin **does not encrypt** your notes. The remote repository should be private.
 
+## First-time setup on a new device
+
+The plugin handles daily commits and pushes, but it **cannot restore remote data into Logseq notes** — Logseq's built-in git uses a separate mirror repository, and files pulled by the plugin will not show up in your notes directory. So a new device needs a one-time manual initialization:
+
+1. Install Git (Windows: https://git-scm.com/download/win).
+2. Clone your repository (replace `your-token` with your access token):
+   ```
+   git clone https://oauth2:your-token@git.example.com/user/logseq.git D:\LogseqData\logseq
+   ```
+   (Use any path you like on macOS/Linux.)
+3. In Logseq, **Add new graph** and select the cloned folder.
+4. Configure the plugin (repository URL + token) and enable Logseq's built-in **Git auto commit**.
+
+After initialization, the plugin handles bidirectional sync as usual.
+
 ## Conflict handling (multi-device)
 
 When `Pull --rebase` is enabled, the plugin runs `git pull --rebase origin <branch>` before pushing. If remote and local changes overlap, the rebase is **aborted automatically** to protect your data, and an error is shown. Resolve the conflict manually, e.g.:

@@ -71,6 +71,21 @@
 - 含令牌的推送地址会明文显示在 `.git/config` 中。建议使用仅含 `repo` 权限的专用令牌；如机器失窃请立即吊销
 - 本插件**不加密**你的笔记，远程仓库请设置为私有
 
+## 在新设备上使用（初始化）
+
+插件负责日常的提交与推送，但**无法把远程仓库的数据还原成 Logseq 笔记**——Logseq 内置 git 使用独立的镜像仓库，插件拉取的文件不会自动出现在笔记目录中。因此新设备首次使用需要手动初始化一次：
+
+1. 安装 Git（Windows: https://git-scm.com/download/win）
+2. 克隆你的仓库（把地址中的 `你的令牌` 替换为你的访问令牌）：
+   ```
+   git clone https://oauth2:你的令牌@git.example.com/用户名/logseq.git D:\LogseqData\logseq
+   ```
+   （Mac / Linux 换成你喜欢的路径即可）
+3. 在 Logseq 中 **Add new graph**，选择克隆出来的文件夹
+4. 配置插件（仓库地址 + 令牌），并开启 Logseq 内置 **Git auto commit**
+
+初始化完成后，插件即可正常进行双向同步。
+
 ## 冲突处理（多设备）
 
 开启 `Pull --rebase` 后，插件在推送前执行 `git pull --rebase origin <分支>`。若远程与本地修改重叠，rebase 会被**自动中止**以保护数据，并显示错误提示。请手动解决冲突，例如：
