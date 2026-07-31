@@ -32,12 +32,25 @@ export function getLogs(): string[] {
 /** Run a git command through Logseq's built-in git proxy (dugite). */
 export async function runGit(args: string[]): Promise<IGitResult> {
   log('info', `$ git ${args.join(' ')}`)
-  let result: IGitResult
+  let result: IGitResult | null | undefined
   try {
     result = await logseq.Git.execCommand(args)
   } catch (e) {
     log('error', `git ${args.join(' ')} threw: ${String(e)}`)
     return { stdout: '', stderr: String(e), exitCode: 1 }
+  }
+  if (!result) {
+    log(
+      'error',
+      `git ${args.join(' ')} -> Logseq git service returned null. ` +
+        `Is Logseq built-in "Git auto commit" enabled? (Settings > Version control)`,
+    )
+    return {
+      stdout: '',
+      stderr:
+        'Logseq git service returned null. Enable "Git auto commit" in Settings > Version control, or check Logseq developer console for git errors.',
+      exitCode: 1,
+    }
   }
   const stdout = result.stdout.trim()
   const stderr = result.stderr.trim()
